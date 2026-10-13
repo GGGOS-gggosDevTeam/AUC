@@ -1,0 +1,680 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AllUnitConvert (AUC) is a Python library for convenient unit conversions.">
+    <meta name="theme-color" content="#0d0b16">
+
+    <title>AllUnitConvert | AUC</title>
+
+    <style>
+        :root {
+            --bg: #0d0b16;
+            --panel: #171425;
+            --purple: #a78bfa;
+            --purple-light: #c4b5fd;
+            --text: #f5f3ff;
+            --muted: #aaa4bf;
+            --border: #302944;
+            --green: #86efac;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .container {
+            width: min(1100px, 90%);
+            margin: auto;
+        }
+
+        /* Navigation */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #0d0b16ee;
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            min-height: 72px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--purple-light);
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            align-items: center;
+            color: var(--muted);
+            font-size: .95rem;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* Hero */
+
+        .hero {
+            text-align: center;
+            padding: 100px 0 85px;
+            background:
+                radial-gradient(
+                    ellipse at 50% 0%,
+                    #6d28d933,
+                    transparent 65%
+                );
+        }
+
+        .version {
+            display: inline-block;
+            padding: 5px 13px;
+            border: 1px solid #8b5cf655;
+            border-radius: 30px;
+            background: #8b5cf615;
+            color: var(--purple-light);
+            font-size: .85rem;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(2.7rem, 7vw, 5rem);
+            line-height: 1.12;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .gradient {
+            background: linear-gradient(90deg, #c4b5fd, #818cf8);
+            color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: 0 auto 30px;
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: 1px solid var(--border);
+            transition: .2s;
+        }
+
+        .btn-primary {
+            background: var(--purple);
+            color: #171025;
+            border-color: var(--purple);
+        }
+
+        .btn-primary:hover {
+            background: var(--purple-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--panel);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--purple);
+        }
+
+        /* Terminal */
+
+        .terminal {
+            max-width: 650px;
+            margin: 48px auto 0;
+            background: #100e19;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            text-align: left;
+            box-shadow: 0 20px 70px #0005;
+        }
+
+        .terminal-bar {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+            padding: 13px 16px;
+            background: #201b30;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f87171;
+        }
+
+        .dot:nth-child(2) {
+            background: #fbbf24;
+        }
+
+        .dot:nth-child(3) {
+            background: #4ade80;
+        }
+
+        .terminal-title {
+            margin-left: 8px;
+            color: var(--muted);
+            font-size: .8rem;
+        }
+
+        pre {
+            overflow-x: auto;
+            padding: 22px;
+            font-family: Consolas, monospace;
+            font-size: .9rem;
+            color: var(--green);
+        }
+
+        /* Sections */
+
+        section {
+            padding: 75px 0;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            margin-bottom: 10px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            padding: 25px;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            border-radius: 15px;
+            transition: .2s;
+        }
+
+        .card:hover {
+            border-color: #8b5cf6aa;
+            transform: translateY(-3px);
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: .95rem;
+        }
+
+        /* Code examples */
+
+        .code-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-header span {
+            font-size: .9rem;
+            color: var(--muted);
+        }
+
+        .copy-btn {
+            background: #302944;
+            color: var(--purple-light);
+            border: 0;
+            border-radius: 7px;
+            padding: 5px 10px;
+            font-size: .8rem;
+        }
+
+        .copy-btn:hover {
+            background: #44365f;
+        }
+
+        .code-card pre {
+            color: #ddd6fe;
+        }
+
+        .comment {
+            color: #8b85a5;
+        }
+
+        /* Installation */
+
+        .install-box {
+            padding: 35px 25px;
+            background: linear-gradient(135deg, #241a3b, #171425);
+            border: 1px solid #5b3a8b;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .install-box p {
+            color: var(--muted);
+            margin: 8px 0 20px;
+        }
+
+        /* Footer */
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 0;
+            color: var(--muted);
+            text-align: center;
+            font-size: .9rem;
+        }
+
+        footer a {
+            color: var(--purple-light);
+        }
+
+        footer p + p {
+            margin-top: 5px;
+        }
+
+        @media (max-width: 750px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                gap: 12px;
+                font-size: .82rem;
+            }
+
+            .hero {
+                padding: 70px 0;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-inner {
+                align-items: flex-start;
+                padding: 15px 0;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                gap: 14px;
+            }
+
+            h1 {
+                letter-spacing: -1px;
+            }
+
+            section {
+                padding: 55px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="logo">AUC<span>.</span></a>
+
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#examples">Examples</a>
+                <a href="#installation">Installation</a>
+                <a href="https://pypi.org/project/allunitconvert/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    PyPI ↗
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="version">
+                🐍 AllUnitConvert · Python Library
+            </div>
+
+            <h1>
+                Convert Units.<br>
+                <span class="gradient">Simply.</span>
+            </h1>
+
+            <p>
+                AllUnitConvert (AUC) is a Python library that
+                makes unit conversions convenient and easy
+                to integrate into your projects.
+            </p>
+
+            <div class="buttons">
+                <a class="btn btn-primary" href="#installation">
+                    Get Started →
+                </a>
+
+                <a class="btn btn-secondary"
+                   href="https://pypi.org/project/allunitconvert/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    View on PyPI ↗
+                </a>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-bar">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="terminal-title">Terminal</span>
+                </div>
+
+                <pre><span style="color:#c4b5fd">$</span> python -m pip install allunitconvert
+
+<span style="color:#c4b5fd">$</span> python
+
+>>> import allunitconvert as auc
+>>> auc.c_to_f(12)
+53.6</pre>
+            </div>
+        </div>
+    </header>
+
+    <section id="features">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Why Choose AUC?</h2>
+                <p>
+                    A convenient tool for everyday unit conversions.
+                </p>
+            </div>
+
+            <div class="grid">
+                <article class="card">
+                    <div class="card-icon">📏</div>
+                    <h3>Multiple Units</h3>
+                    <p>
+                        Convert between supported measurement units,
+                        including length, mass, temperature, and more.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Simple API</h3>
+                    <p>
+                        Call conversion functions directly from
+                        your Python programs.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">🐍</div>
+                    <h3>Python-Friendly</h3>
+                    <p>
+                        Integrate AUC into your Python scripts
+                        and applications.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">🧩</div>
+                    <h3>Convenient Functions</h3>
+                    <p>
+                        Use individual conversion functions
+                        for common conversion tasks.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">💻</div>
+                    <h3>Developer-Focused</h3>
+                    <p>
+                        Useful for scripts, educational projects,
+                        and applications that need unit conversions.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">📦</div>
+                    <h3>Easy Installation</h3>
+                    <p>
+                        Install the package from PyPI using
+                        the standard Python package installer.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="examples">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Get Started in Seconds</h2>
+                <p>
+                    Copy an example and try it in your Python environment.
+                </p>
+            </div>
+
+            <div class="code-card">
+                <div class="code-header">
+                    <span>📦 Installation</span>
+                    <button class="copy-btn"
+                            data-copy="python -m pip install allunitconvert">
+                        Copy
+                    </button>
+                </div>
+                <pre>python -m pip install allunitconvert</pre>
+            </div>
+
+            <div class="code-card">
+                <div class="code-header">
+                    <span>🌡️ Temperature Conversion</span>
+                    <button class="copy-btn"
+                            data-copy="import allunitconvert as auc
+
+print(auc.c_to_f(12))">
+                        Copy
+                    </button>
+                </div>
+                <pre>import allunitconvert as auc
+
+print(auc.c_to_f(12))</pre>
+            </div>
+
+            <div class="code-card">
+                <div class="code-header">
+                    <span>🔧 General Conversion API</span>
+                    <button class="copy-btn"
+                            data-copy="import allunitconvert as auc
+
+print(auc.convert(5, 'km', 'm'))">
+                        Copy
+                    </button>
+                </div>
+                <pre><span class="comment"># Example: use this if supported by your installed version.</span>
+import allunitconvert as auc
+
+print(auc.convert(5, "km", "m"))</pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="installation">
+        <div class="container">
+            <div class="install-box">
+                <h2>Ready to Try AUC? 🚀</h2>
+
+                <p>
+                    Install the package or explore the project
+                    and its releases on PyPI.
+                </p>
+
+                <div class="buttons">
+                    <button class="btn btn-primary"
+                            data-copy="python -m pip install allunitconvert">
+                        📋 Copy Installation Command
+                    </button>
+
+                    <a class="btn btn-secondary"
+                       href="https://pypi.org/project/allunitconvert/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Open PyPI ↗
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p><strong>AllUnitConvert (AUC)</strong></p>
+            <p>Built for Python developers. 🐍</p>
+
+            <p>
+                <a href="https://pypi.org/project/allunitconvert/"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    PyPI Project Page
+                </a>
+            </p>
+
+            <p style="margin-top: 12px;">
+                © <span id="year"></span> AllUnitConvert
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+        document.querySelectorAll("[data-copy]").forEach(button => {
+            button.addEventListener("click", async () => {
+                const text = button.dataset.copy;
+                const original = button.textContent;
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    button.textContent = "Copied ✓";
+                } catch {
+                    const area = document.createElement("textarea");
+
+                    area.value = text;
+                    area.style.position = "fixed";
+                    area.style.opacity = "0";
+
+                    document.body.appendChild(area);
+                    area.select();
+
+                    try {
+                        const copied = document.execCommand("copy");
+
+                        button.textContent = copied
+                            ? "Copied ✓"
+                            : "Copy failed";
+                    } catch {
+                        button.textContent = "Copy failed";
+                    }
+
+                    area.remove();
+                }
+
+                setTimeout(() => {
+                    button.textContent = original;
+                }, 1800);
+            });
+        });
+    </script>
+
+</body>
+</html>
+```
